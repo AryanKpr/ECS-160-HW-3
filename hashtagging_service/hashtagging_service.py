@@ -9,7 +9,7 @@ import hashtagging_pb2_grpc
 
 # Configure Gemini
 client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-3.8-flash"
 
 
 
