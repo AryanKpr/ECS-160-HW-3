@@ -25,7 +25,7 @@ def generate_hashtag(post_content):
             if word.startswith("#") and len(word) > 1:
                 return word.strip(".,!?\"'")
     except Exception as e:
-        print(f"Gemini error: {e}", flush=True)
+        print(f"Gemini error: {e}")
     return "#bskypost"
 
 
