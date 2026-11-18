@@ -5,23 +5,40 @@ import sys
 
 
 def load_posts(input_path):
-    pass
+    posts = []
+    with open(input_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f) 
+        for row in reader:
+            row["like_count"] = int(row["like_count"])
+            posts.append(row)
 
+    return posts
 
 
 def get_top_posts(posts, limit=10):
-    pass
+    sorted_posts = sorted(posts, key=lambda p: p["like_count"], reverse=True)
+    return sorted_posts[:limit]
 
 def send_to_pipeline(post_content):
     """
     Send a post to the moderation service.
     Returns the hashtag string on success, or 'FAILED' if moderation fails.
     """
-    pass 
+    try:
+        response= requests.post("http://localhost:8001/moderate", json={"post_content": post_content}, timeout=30)
+        return response.json()["result"]
+    except Exception as e:
+        print(f"Pipeline error: {e}")
+    return "#bskypost"
 
 
 def process_post(post, index):
-    pass
+    print(f"--- Post {index} ---")
+    result = send_to_pipeline(post["text"])
+    if result == "FAILED":
+        print ("[DELETD]")
+    else:
+        print(f"{post['text']} {result}")
     
 
 
